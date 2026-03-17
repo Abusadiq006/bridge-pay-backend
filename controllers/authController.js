@@ -11,7 +11,15 @@ exports.registerUser = async (req, res) => {
 
         if (authError) throw authError
 
-        
+        const { error: profileError } = await supabase
+        .from('profiles')
+        .insert([
+            {
+                id: authData.user.id,
+                full_name,
+                email
+            }
+        ])
     }
 }
 
