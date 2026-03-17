@@ -27,6 +27,9 @@ exports.registerUser = async (req, res) => {
             message: "User registered successfully!",
             user: authData.user
         })
+
+    } catch (error) {
+        res.status(400).json({ error: error.message })
     }
 }
 
