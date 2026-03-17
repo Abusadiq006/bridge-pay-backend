@@ -20,6 +20,13 @@ exports.registerUser = async (req, res) => {
                 email
             }
         ])
+
+        if (profileError) throw profileError
+
+        res.status(201).json({
+            message: "User registered successfully!",
+            user: authData.user
+        })
     }
 }
 
