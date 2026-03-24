@@ -18,5 +18,18 @@ exports.getUserProfile = async (req, res) => {
         `)
         .eq('id', userId)
         .single()
+
+        if (profileError) throw profileError
+
+        res.status(200).json({
+            success: true,
+            data: profile
+        })
+
+        } catch (error) {
+            res.status(500).json({
+                success: false,
+                error: error.message
+            })
+        }
     }
-}
