@@ -8,5 +8,15 @@ const Account = {
         .eq('user_id', userId)
         .single()
         return { data, error }
+    },
+
+    updateBalance: async (accountId, newBalance) => {
+        const { data, error } = await supabase
+        .from('accounts')
+        .update({ balance: newBalance })
+        .eq('id', accountId)
+        return { data, error }
     }
 }
+
+module.exports = Account
