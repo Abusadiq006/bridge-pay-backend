@@ -41,6 +41,8 @@ exports.loginUser = async (req, res) => {
             email,
             password,
         })
+
+        if (error) throw error
     }
 }
 
