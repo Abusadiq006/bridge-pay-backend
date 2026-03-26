@@ -18,6 +18,10 @@ router.get('/profile', async (req, res) => {
     })
 
     const { data: { user }, error } = await supabase.auth.getUser(token)
+
+    if (error) return res.status(401).json({
+        error: error. message
+    })
 } )
 
 module.exports = router 
