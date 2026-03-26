@@ -50,7 +50,9 @@ exports.loginUser = async (req, res) => {
             user: data.user
         })
 
-    } catch (error) 
+    } catch (error) {
+        res.status(401).json({ error: error.message })
+    }
 }
 
 exports.register
