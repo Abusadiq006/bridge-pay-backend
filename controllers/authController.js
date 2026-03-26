@@ -43,6 +43,12 @@ exports.loginUser = async (req, res) => {
         })
 
         if (error) throw error
+
+        res.status(200).json({
+            message: "Login successful!",
+            session: data.session,
+            user: data.user
+        })
     }
 }
 
