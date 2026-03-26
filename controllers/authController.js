@@ -49,7 +49,8 @@ exports.loginUser = async (req, res) => {
             session: data.session,
             user: data.user
         })
-    }
+
+    } catch (error) 
 }
 
 exports.register
