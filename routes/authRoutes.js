@@ -16,6 +16,8 @@ router.get('/profile', async (req, res) => {
     if (!token) return res.status(401).json({
         error: 'No token provided'
     })
+
+    const { data: { user }, error } = await supabase.auth.getUser(token)
 } )
 
 module.exports = router 
