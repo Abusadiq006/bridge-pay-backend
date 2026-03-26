@@ -8,4 +8,4 @@ router.post('/register', authController.registerUser)
 // Route for Login
 router.post('/api/auth/login', authController.loginUser)
 
-module.exports = router
+module.exports = router 
