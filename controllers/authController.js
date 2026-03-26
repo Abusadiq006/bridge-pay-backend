@@ -55,4 +55,3 @@ exports.loginUser = async (req, res) => {
     }
 }
 
-exports.register

@@ -1,28 +1,32 @@
-const supabase = require('../config/supabaseClient')
+const jwt = require('jsonwebtoken');
+const supabase = require('../config/supabaseClient');
 
 const protect = async (req, res, next) => {
-    let token
+    let token;
 
     if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
         try {
-            token = req.headers.authorization.split(' ')[1]
+            // Get token from header
+            token = req.headers.authorization.split(' ')[1];
 
-            const { data: { user}, error } = await supabase.auth.getUser(token)
+            // Verify token with Supabase
+            const { data: { user }, error } = await supabase.auth.getUser(token);
 
             if (error || !user) {
-                return res.status(401).json({ error: 'Not authorized, token failed' })
+                return res.status(401).json({ message: 'Not authorized, token failed' });
             }
 
-            req.user = user
-            next()
+            // Add user to request object
+            req.user = user;
+            next();
         } catch (error) {
-            res.status(401).json({ error: 'Not authorized' })
+            res.status(401).json({ message: 'Not authorized' });
         }
     }
 
     if (!token) {
-        res.status(401).json({ error: 'Not authorized, no token provided' })
+        res.status(401).json({ message: 'Not authorized, no token' });
     }
-}
+};
 
-module.exports = { protect }
+module.exports = { protect };
