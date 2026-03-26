@@ -37,7 +37,10 @@ exports.loginUser = async (req, res) => {
     const { email, password } = req.body
 
     try {
-        
+        const { data, error } = await supabase.auth.signInWithPassword({
+            email,
+            password,
+        })
     }
 }
 
