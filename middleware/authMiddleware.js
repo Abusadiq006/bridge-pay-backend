@@ -1,4 +1,3 @@
-const jwt = require('jsonwebtoken');
 const supabase = require('../config/supabaseClient');
 
 const protect = async (req, res, next) => {
