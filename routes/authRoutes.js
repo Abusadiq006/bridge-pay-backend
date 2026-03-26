@@ -22,6 +22,8 @@ router.get('/profile', async (req, res) => {
     if (error) return res.status(401).json({
         error: error. message
     })
+
+    res.status(200).json({ user })
 } )
 
 module.exports = router 
