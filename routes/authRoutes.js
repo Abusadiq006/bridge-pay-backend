@@ -1,29 +1,41 @@
-const express = require('express')
-const router = express.Router()
-const authController = require('../controllers/authController')
-const { auth } = require('../config/supabaseClient')
+const express = require('express');
+const router = express.Router();
+const authController = require('../controllers/authController');
+const { supabase } = require('../config/supabaseClient'); // Ensure you import the main supabase client
 
-// Route for Registration
-router.post('/register', authController.registerUser)
+// 1. Middleware for protection (You can also move this to a separate file like middleware/auth.js)
+const protect = async (req, res, next) => {
+    const token = req.headers.authorization?.split(' ')[1];
 
-// Route for Login
-router.post('/login', authController.loginUser)
+    if (!token) {
+        return res.status(401).json({ error: 'No token provided' });
+    }
 
-// Route for Profile
-router.get('/profile', async (req, res) => {
-    const token = req.headers.authorization?.split(' ')[1]
+    try {
+        const { data: { user }, error } = await supabase.auth.getUser(token);
 
-    if (!token) return res.status(401).json({
-        error: 'No token provided'
-    })
+        if (error || !user) {
+            return res.status(401).json({ error: error?.message || 'Invalid token' });
+        }
 
-    const { data: { user }, error } = await supabase.auth.getUser(token)
+        // Attach user to request for use in the controller
+        req.user = user;
+        next();
+    } catch (err) {
+        return res.status(500).json({ error: 'Server error during authentication' });
+    }
+};
 
-    if (error) return res.status(401).json({
-        error: error. message
-    })
+// --- Routes ---
 
-    res.status(200).json({ user })
-} )
+// Public Routes
+router.post('/register', authController.registerUser);
+router.post('/login', authController.loginUser);
 
-module.exports = router 
+// Protected Route (Clean & Concise)
+router.get('/profile', protect, (req, res) => {
+    // Because of 'protect', we know req.user exists here
+    res.status(200).json({ user: req.user });
+});
+
+module.exports = router;
