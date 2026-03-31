@@ -1,3 +1,6 @@
+const jwt = require('jsonwebtoken')
+const { createClient } = require('@supabase/supabase-js')
+
 const supabase = require('../config/supabaseClient');
 
 const protect = async (req, res, next) => {
