@@ -41,6 +41,7 @@ router.get('/profile', protect, (req, res) => {
         const { data: { user }, error } = await supabase.auth.getUser(token)
         
         if (error) return res.status(401).json({ error: error.message })
+            
     res.status(200).json({ user: req.user });
 });
 
