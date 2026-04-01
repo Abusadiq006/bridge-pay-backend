@@ -36,6 +36,7 @@ router.post('/login', authController.loginUser);
 router.get('/profile', protect, (req, res) => {
     const token = req.headers.authorization?.split(' ')[1]
     // Because of 'protect', we know req.user exists here
+    if (!token) return res.status(401).json({ error: 'No token provided' })
     res.status(200).json({ user: req.user });
 });
 
