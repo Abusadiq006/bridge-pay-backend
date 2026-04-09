@@ -45,9 +45,10 @@ exports.loginUser = async (req, res) => {
         if (error) throw error
 
         const { error: dbError } = await supabase
-            .from('profiles')
-            .insert([{ id: data.user.id, email: email, full_name: fullName }])
-        res.status(200).json({
+                .from('profiles')
+                .insert([{ id: data.user.id, email: email, full_name: fullName }])
+            if (dbError) console.log("DB Insert Error:", dbError.message)
+            res.status(200).json({
             message: "Login successful!",
             session: data.session,
             user: data.user
