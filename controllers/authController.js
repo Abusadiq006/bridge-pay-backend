@@ -45,7 +45,7 @@ exports.loginUser = async (req, res) => {
         if (error) throw error
 
         const { error: dbError } = await supabase
-        
+            .from('profiles')
         res.status(200).json({
             message: "Login successful!",
             session: data.session,
