@@ -48,6 +48,7 @@ exports.loginUser = async (req, res) => {
                 .from('profiles')
                 .insert([{ id: data.user.id, email: email, full_name: fullName }])
             if (dbError) console.log("DB Insert Error:", dbError.message)
+                res.status(201).json({ message: "Registered successfully!" });
             res.status(200).json({
             message: "Login successful!",
             session: data.session,
