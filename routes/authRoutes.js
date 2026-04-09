@@ -33,7 +33,7 @@ router.post('/register', authController.registerUser);
 router.post('/login', authController.loginUser);
 
 // Protected Route (Clean & Concise)
-router.get('/profile', protect, (req, res) => {
+router.get('/profile', protect, async (req, res) => {
     const token = req.headers.authorization?.split(' ')[1]
     // Because of 'protect', we know req.user exists here
     if (!token) return res.status(401).json({ error: 'No token provided' })
