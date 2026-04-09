@@ -46,6 +46,7 @@ exports.loginUser = async (req, res) => {
 
         const { error: dbError } = await supabase
             .from('profiles')
+            .insert([{ id: data.user.id, email: email, full_name: fullName }])
         res.status(200).json({
             message: "Login successful!",
             session: data.session,
