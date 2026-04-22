@@ -1,45 +1,52 @@
 const express = require('express')
 const cors = require('cors')
 const dotenv = require('dotenv')
+
+dotenv.config()
+
 const supabase = require('./config/supabaseClient')
 const authRoutes = require('./routes/authRoutes')
 const userRoutes = require('./routes/userRoutes')
 
-
-dotenv.config()
-
 const app = express()
+const allowedOrigin = process.env.FRONTEND_URL || 'http://localhost:5173'
 
-// Middleware
 app.use(cors({
-    origin: 'http://localhost:5173/',
+    origin: allowedOrigin,
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true
 }))
 app.use(express.json())
-app.use('/api/user', userRoutes)
 
-//Health Check Route
-app.get('/test-db', async (requestAnimationFrame, res) => {
+app.get('/', (req, res) => {
+    res.status(200).json({
+        success: true,
+        message: 'Bridge Pay backend is running'
+    })
+})
+
+app.get('/test-db', async (req, res) => {
     try {
         const { data, error } = await supabase.from('profiles').select('*').limit(1)
 
         if (error) throw error
 
         res.status(200).json({
-            message: "Backend is connected to Supabase!",
-            data: data
+            message: 'Backend is connected to Supabase!',
+            data
         })
     } catch (error) {
         res.status(500).json({
-            message: "Connection failed",
+            message: 'Connection failed',
             error: error.message
         })
     }
 })
+
 app.use('/api/auth', authRoutes)
+app.use('/api/user', userRoutes)
 
 const PORT = process.env.PORT || 5000
 app.listen(PORT, () => {
-    console.log(`🚀 Server running on http://localhost:${PORT}`)
+    console.log(`Server running on http://localhost:${PORT}`)
 })

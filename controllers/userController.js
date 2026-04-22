@@ -6,7 +6,7 @@ exports.getUserProfile = async (req, res) => {
 
         const { data: profile, error: profileError } = await supabase
         .from('profiles')
-        .selesct(`
+        .select(`
             full_name,
             email,
             role,
